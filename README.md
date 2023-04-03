@@ -1,2 +1,3 @@
-# deadpool
-main website for rrdecoders.com
+# DeadPool
+
+Repo that powers rrdecoders.com
