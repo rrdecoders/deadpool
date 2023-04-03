@@ -1,2 +1,2 @@
 # deadpool
-Main website for rrdecoders.com
+main website for rrdecoders.com
