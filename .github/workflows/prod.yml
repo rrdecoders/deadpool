@@ -1,0 +1,35 @@
+name: Prod Deploy [MAIN]
+
+run-name: Prod Environment Deployment [rrdecoders.com]
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Manual Approval to Deploy to Production
+        uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: mearjunsingh
+          minimum-approvals: 1
+          issue-title: 'Deploying RR Decoders to Production'
+          issue-body: 'Please approve this workflow to deploy RR Decoders to Production'
+          issue-labels: 'prod deploy'
+
+      - name: Checkout Code from GitHub Repository
+        uses: actions/checkout@v3
+
+      - name: Copy Files to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: .
+          target: ${{ secrets.PROD_DIR }}
+          strip_components: 1

@@ -1,0 +1,27 @@
+name: UAT Deploy [DEVELOP]
+
+run-name: UAT Environment Deployment [uat.rrdecoders.com]
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code from GitHub Repository
+        uses: actions/checkout@v3
+
+      - name: Copy Files to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: .
+          target: ${{ secrets.UAT_DIR }}
+          strip_components: 1
